@@ -1,6 +1,6 @@
 import React from "react";
 
-const offers = [   // lowercase 'offers'
+const offer = [   // lowercase 'offers'
   {
     logo: "https://i.imgur.com/xFQQV7c.png",
     title: "Complete Car WARRANTY",
@@ -56,7 +56,7 @@ const Offer = () => {
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-        {offers.map((offer, index) => (
+        {offer.map((offer, index) => (
           <div
             key={index}
             className="border border-gray-300 rounded-lg shadow-sm bg-white overflow-hidden flex flex-col"
