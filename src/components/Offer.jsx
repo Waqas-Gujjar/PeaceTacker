@@ -1,89 +1,65 @@
 import React from "react";
-import offer1 from '../assets/images/offer.png';
-import offer2 from '../assets/images/offer2.png';
-import offer3 from '../assets/images/offer3.png';
-import offer4 from '../assets/images/offer4.png';
+import { motion } from "framer-motion";
 
-const offer = [
-  {
-    logo: offer1,  // ✅ Just the image reference
-    title: "Complete Car WARRANTY",
-    subtitle: "Get full protection for up to 60% off before unexpected auto repair costs you thousands",
-    bullets: [
-      "Don't fall victim to expensive car repairs",
-      "Get unlimited repair claims",
-      "Accepted at all dealers and mechanics"
-    ],
-  },
-  {
-    logo: offer2,
-    title: "Walmart MoneyCard",
-    subtitle: "Earn cash back with the Walmart MoneyCard",
-    bullets: [
-      "3% cash back at Walmart.com",
-      "2% cash back at Walmart fuel stations",
-      "1% cash back at Walmart stores; up to $75/year"
-    ],
-  },
-  {
-    logo: offer3,
-    title: "CreditBuilderIQ",
-    subtitle: "Build Credit the Smart Way",
-    bullets: [
-      "Credit Report and Score",
-      "7 Day Trial",
-      "Build Your Credit",
-      "Dispute credit inaccuracies"
-    ],
-  },
-  {
-    logo: offer4,
-    title: "atlaswizard",
-    subtitle: "Insurance made easy!",
-    bullets: [
-      "Find out if you may be able to save on your auto insurance",
-      "Discover your best options",
-      "Explore insurance companies head-to-head"
-    ],
-  },
-];
-
-const Offer = () => {
+const ThankYouPage = () => {
   return (
-    <div className="bg-white py-10 px-4">
-      <h2 className="text-2xl md:text-3xl text-center font-bold text-gray-900 mb-2">
-        Unfortunately, Your Accident Doesn't Qualify For Our Assistance
-      </h2>
-      <p className="text-center text-lg font-semibold text-gray-700 mb-8">
-        However, We Have Some Special Offers From Our Partners As A{" "}
-        <a href="#" className="text-blue-600 underline">Thank You</a>
-      </p>
+    <div className="min-h-screen bg-gradient-to-br from-green-100 via-white to-green-50 flex flex-col items-center justify-center px-4 py-10 font-sans">
+      {/* Top Message */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="text-center max-w-3xl"
+      >
+        <h1 className="text-4xl sm:text-5xl font-extrabold text-green-700 mb-4">
+          🎉 Thank You!
+        </h1>
+        <p className="text-gray-700 text-lg sm:text-xl mb-6">
+          We're here to make the process easy and seamless for you and your loved ones.
+        </p>
+        <p className="text-gray-600 text-base sm:text-lg">
+          We do the heavy lifting so you can rest easy knowing we're working hard
+          to get you the <span className="font-semibold text-green-800">compensation you deserve</span>.
+        </p>
+      </motion.div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-        {offer.map((offer, index) => (
-          <div
-            key={index}
-            className="border border-gray-300 rounded-lg shadow-sm bg-white overflow-hidden flex flex-col"
+      {/* Steps / Cards Section */}
+      <div className="mt-12 max-w-4xl w-full cursor-pointer space-y-10">
+        {[
+          {
+            title: "📞 CLAIM EVALUATION CALL",
+            desc: `The first step in our process is reaching out to you using the contact info you provided. We'll walk you through every part of your accident and start helping you understand the REAL compensation you deserve.`,
+          },
+          {
+            title: "📄 SUBMIT DOCUMENTS",
+            desc: `Once we've gathered the key details of your accident, we'll need your help to provide documents. This is the only piece we'll need assistance with—just to complete the picture.`,
+          },
+          {
+            title: "🔍 REVIEW YOUR DAMAGES",
+            desc: `With your documents in hand, we'll match you with a Personal Injury Specialist who has specific experience in cases just like yours.`,
+          },
+          {
+            title: "💰 GET MAX COMPENSATION",
+            desc: `After meeting your Specialist, we’ll finalize the settlement or trial path to get the maximum compensation in your hands.`,
+          },
+        ].map((section, idx) => (
+          <motion.div
+            key={idx}
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: idx * 0.2, duration: 0.5 }}
+            whileHover={{ scale: 1.03 }}
+            className="bg-white rounded-xl shadow-md p-6 border border-green-200 transition-all duration-300 hover:shadow-xl hover:border-green-400"
           >
-            <div className=" flex items-center justify-center border-b border-gray-300 p-4">
-              <img src={offer.logo} alt={offer.title} className=" object-contain" />
-            </div>
-            <div className="p-4 flex flex-col flex-grow justify-between">
-              <p className="text-sm font-semibold text-blue-600 mb-2">{offer.subtitle}</p>
-              <ul className="text-sm font-semibold text-gray-800 list-disc list-inside space-y-1 mb-4">
-                {offer.bullets.map((point, i) => (
-                  <li key={i}>{point}</li>
-                ))}
-              </ul>
-              <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded mt-auto">
-                GET STARTED
-              </button>
-            </div>
-          </div>
+            <h3 className="text-xl font-bold text-green-700 mb-2">{section.title}</h3>
+            <p className="text-gray-700 text-base leading-relaxed">{section.desc}</p>
+          </motion.div>
         ))}
       </div>
+
+     
     </div>
   );
 };
 
-export default Offer;
+export default ThankYouPage;

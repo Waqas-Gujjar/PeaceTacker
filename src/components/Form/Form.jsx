@@ -67,7 +67,9 @@ const MultiStepForm = () => {
             transition={{ duration: 0.5, ease: "easeInOut" }}
           />
           <div className="absolute top-0 left-0 w-full h-3 sm:h-4 flex justify-between items-center px-2 sm:px-3 text-[10px] sm:text-xs font-semibold text-white pointer-events-none">
-            <span>Step {step} of {steps.length}</span>
+            <span>
+              Step {step} of {steps.length}
+            </span>
             <span>{Math.round(progressPercent)}%</span>
           </div>
         </div>
@@ -86,27 +88,34 @@ const MultiStepForm = () => {
               className="text-center text-green-600 font-bold text-lg sm:text-xl"
             >
               ✅ Thank you! Your form was submitted successfully.
-              <div className="text-sm mt-2 text-gray-500">Redirecting to offers...</div>
+              <div className="text-sm mt-2 text-gray-500">
+                Redirecting to offers...
+              </div>
             </motion.div>
           ) : (
             <>
               {step === 1 && (
                 <motion.div key="step1" {...motionProps}>
-                  <h2 className="text-lg sm:text-xl font-bold mb-4">1. How were you hurt?</h2>
+                  <h2 className="text-lg sm:text-xl font-bold mb-4">
+                    1. How were you hurt?
+                  </h2>
                   {[
                     "Automobile Accident",
                     "Medical Negligence",
                     "Slip & Fall",
                     "Other Injury or Accident",
                   ].map((option) => (
-                    <label key={option} className="block mb-2 text-sm sm:text-base">
+                    <label
+                      key={option}
+                      className="block mb-2 text-sm sm:text-base"
+                    >
                       <input
                         type="radio"
                         name="injuryType"
                         value={option}
                         checked={formData.injuryType === option}
                         onChange={handleChange}
-                        className="mr-2"
+                        className="mr-2 cursor-pointer"
                       />
                       {option}
                     </label>
@@ -116,21 +125,26 @@ const MultiStepForm = () => {
 
               {step === 2 && (
                 <motion.div key="step2" {...motionProps}>
-                  <h2 className="text-lg sm:text-xl font-bold mb-4">2. How long ago was your accident?</h2>
+                  <h2 className="text-lg sm:text-xl font-bold mb-4">
+                    2. How long ago was your accident?
+                  </h2>
                   {[
                     "Within 1-3 months",
                     "Within 3-6 months",
                     "Within 9-12 Months",
                     "Within 24 Months",
                   ].map((option) => (
-                    <label key={option} className="block mb-2 text-sm sm:text-base">
+                    <label
+                      key={option}
+                      className="block mb-2 text-sm sm:text-base"
+                    >
                       <input
                         type="radio"
                         name="accidentTime"
                         value={option}
                         checked={formData.accidentTime === option}
                         onChange={handleChange}
-                        className="mr-2"
+                        className="mr-2 cursor-pointer"
                       />
                       {option}
                     </label>
@@ -140,16 +154,25 @@ const MultiStepForm = () => {
 
               {step === 3 && (
                 <motion.div key="step3" {...motionProps}>
-                  <h2 className="text-lg sm:text-xl font-bold mb-4">Was the accident your fault?</h2>
-                  {["No, I was not at fault", "Partially at fault", "Not sure"].map((option) => (
-                    <label key={option} className="block mb-2 text-sm sm:text-base">
+                  <h2 className="text-lg sm:text-xl font-bold mb-4">
+                    Was the accident your fault?
+                  </h2>
+                  {[
+                    "No, I was not at fault",
+                    "Partially at fault",
+                    "Not sure",
+                  ].map((option) => (
+                    <label
+                      key={option}
+                      className="block mb-2 text-sm sm:text-base"
+                    >
                       <input
                         type="radio"
                         name="fault"
                         value={option}
                         checked={formData.fault === option}
                         onChange={handleChange}
-                        className="mr-2"
+                        className="mr-2 cursor-pointer"
                       />
                       {option}
                     </label>
@@ -159,7 +182,9 @@ const MultiStepForm = () => {
 
               {step === 4 && (
                 <motion.div key="step4" {...motionProps}>
-                  <h2 className="text-lg sm:text-xl font-bold mb-4">Did you receive medical attention?</h2>
+                  <h2 className="text-lg sm:text-xl font-bold mb-4">
+                    Did you receive medical attention?
+                  </h2>
                   {[
                     "Ambulance",
                     "Emergency Room",
@@ -168,14 +193,17 @@ const MultiStepForm = () => {
                     "Chiropractor",
                     "No Medical Attention Yet",
                   ].map((option) => (
-                    <label key={option} className="block mb-2 text-sm sm:text-base">
+                    <label
+                      key={option}
+                      className="block mb-2 text-sm sm:text-base"
+                    >
                       <input
                         type="checkbox"
                         name="medical"
                         value={option}
                         checked={formData.medical.includes(option)}
                         onChange={handleChange}
-                        className="mr-2"
+                        className="mr-2 cursor-pointer"
                       />
                       {option}
                     </label>
@@ -185,7 +213,7 @@ const MultiStepForm = () => {
                   <button
                     type="button"
                     onClick={goToNext}
-                    className="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded text-sm sm:text-base"
+                    className="mt-4 bg-blue-600 cursor-pointer hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded text-sm sm:text-base"
                   >
                     Next
                   </button>
@@ -194,16 +222,21 @@ const MultiStepForm = () => {
 
               {step === 5 && (
                 <motion.div key="step5" {...motionProps}>
-                  <h2 className="text-lg sm:text-xl font-bold mb-4">Have you signed any paperwork with an attorney?</h2>
+                  <h2 className="text-lg sm:text-xl font-bold mb-4">
+                    Have you signed any paperwork with an attorney?
+                  </h2>
                   {["No", "Yes"].map((option) => (
-                    <label key={option} className="block mb-2 text-sm sm:text-base">
+                    <label
+                      key={option}
+                      className="block mb-2 text-sm sm:text-base"
+                    >
                       <input
                         type="radio"
                         name="attorney"
                         value={option}
                         checked={formData.attorney === option}
                         onChange={handleChange}
-                        className="mr-2"
+                        className="mr-2 cursor-pointer"
                       />
                       {option}
                     </label>
@@ -213,16 +246,19 @@ const MultiStepForm = () => {
 
               {step === 6 && (
                 <motion.div key="step6" {...motionProps}>
-                  <h2 className="text-lg sm:text-xl font-bold mb-4">Contact Details</h2>
+                  <h2 className="text-lg sm:text-xl font-bold mb-4">
+                    Contact Details
+                  </h2>
                   <input
                     type="text"
                     name="fullName"
                     placeholder="Full Name"
                     value={formData.fullName}
                     onChange={handleChange}
-                    className="w-full p-2 mb-4 border border-gray-300 rounded text-sm sm:text-base"
+                    className="w-full p-2 mb-4 border border-gray-300 cursor-pointer rounded text-sm sm:text-base"
                     required
                   />
+
                   <input
                     type="tel"
                     name="phone"
@@ -230,6 +266,22 @@ const MultiStepForm = () => {
                     value={formData.phone}
                     onChange={handleChange}
                     className="w-full p-2 mb-4 border border-gray-300 rounded text-sm sm:text-base"
+                    required
+                  />
+                  <input
+                    type="text"
+                    name="zipCode"
+                    placeholder="Zip Code (5 digits)"
+                    value={formData.zipCode || ""}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (/^\d{0,5}$/.test(value)) {
+                        setFormData({ ...formData, zipCode: value });
+                      }
+                    }}
+                    className="w-full p-2 mb-4 border border-gray-300 rounded text-sm sm:text-base"
+                    inputMode="numeric"
+                    maxLength={5}
                     required
                   />
                   <input
@@ -242,7 +294,7 @@ const MultiStepForm = () => {
                   />
                   <button
                     type="submit"
-                    className="w-full mt-4 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded text-sm sm:text-base"
+                    className="w-full mt-4 cursor-pointer bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded text-sm sm:text-base"
                   >
                     Submit
                   </button>
