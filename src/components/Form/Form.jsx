@@ -104,7 +104,7 @@ const MultiStepForm = () => {
               className="text-center text-green-600 font-bold text-lg sm:text-xl"
             >
               ✅ Thank you! Your form was submitted successfully.
-              <div className="text-sm mt-2 text-gray-500">Redirecting to offers...</div>
+             
             </motion.div>
           ) : (
             <>
