@@ -36,7 +36,6 @@ const MultiStepForm = () => {
         ? [...formData.medical, value]
         : formData.medical.filter((item) => item !== value);
       setFormData({ ...formData, medical: updatedMedical });
-      if (checked) goToNext();
     } else {
       setFormData({ ...formData, [name]: value });
       goToNext();
@@ -181,6 +180,15 @@ const MultiStepForm = () => {
                       {option}
                     </label>
                   ))}
+
+                  {/* Next button for Step 4 */}
+                  <button
+                    type="button"
+                    onClick={goToNext}
+                    className="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded text-sm sm:text-base"
+                  >
+                    Next
+                  </button>
                 </motion.div>
               )}
 
