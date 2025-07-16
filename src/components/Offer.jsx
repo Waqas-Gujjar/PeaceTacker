@@ -1,8 +1,12 @@
 import React from "react";
+import offer1 from '../assets/images/offer.png';
+import offer2 from '../assets/images/offer2.png';
+import offer3 from '../assets/images/offer3.png';
+import offer4 from '../assets/images/offer4.png';
 
-const offer = [   // lowercase 'offers'
+const offer = [
   {
-    logo: "https://i.imgur.com/xFQQV7c.png",
+    logo: offer1,  // ✅ Just the image reference
     title: "Complete Car WARRANTY",
     subtitle: "Get full protection for up to 60% off before unexpected auto repair costs you thousands",
     bullets: [
@@ -12,7 +16,7 @@ const offer = [   // lowercase 'offers'
     ],
   },
   {
-    logo: "https://i.imgur.com/hMLx4pz.png",
+    logo: offer2,
     title: "Walmart MoneyCard",
     subtitle: "Earn cash back with the Walmart MoneyCard",
     bullets: [
@@ -22,7 +26,7 @@ const offer = [   // lowercase 'offers'
     ],
   },
   {
-    logo: "https://i.imgur.com/mtGZfW1.png",
+    logo: offer3,
     title: "CreditBuilderIQ",
     subtitle: "Build Credit the Smart Way",
     bullets: [
@@ -33,7 +37,7 @@ const offer = [   // lowercase 'offers'
     ],
   },
   {
-    logo: "https://i.imgur.com/ZhW9grG.png",
+    logo: offer4,
     title: "atlaswizard",
     subtitle: "Insurance made easy!",
     bullets: [
@@ -61,8 +65,8 @@ const Offer = () => {
             key={index}
             className="border border-gray-300 rounded-lg shadow-sm bg-white overflow-hidden flex flex-col"
           >
-            <div className="h-30 flex items-center justify-center border-b border-gray-300  p-4">
-              <img src={offer.logo} alt={offer.title} className="max-h-12 object-contain" />
+            <div className=" flex items-center justify-center border-b border-gray-300 p-4">
+              <img src={offer.logo} alt={offer.title} className=" object-contain" />
             </div>
             <div className="p-4 flex flex-col flex-grow justify-between">
               <p className="text-sm font-semibold text-blue-600 mb-2">{offer.subtitle}</p>
