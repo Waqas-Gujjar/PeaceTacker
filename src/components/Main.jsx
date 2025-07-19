@@ -11,7 +11,7 @@ const Main = () => {
       <div className="w-full max-w-6xl mt-10 sm:mt-14 mb-6">
         {/* Header Text */}
         <div className="text-center px-2 sm:px-6 md:px-10 py-8">
-          <h1 className="text-3xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight tracking-tight mb-2  ">
+          <h1 className="text-3xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight tracking-tight mb-1  ">
             <span className="text-blue-600">Don't Wait</span>
           </h1>
           <p className="text-lg sm:text-2xl md:text-3xl text-gray-700 font-semibold leading-relaxed">
