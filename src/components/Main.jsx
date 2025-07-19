@@ -12,7 +12,7 @@ const Main = () => {
         {/* Header Text */}
         <div className="text-center px-2 sm:px-6 md:px-10 py-8">
           <h1 className="text-3xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight tracking-tight mb-2  ">
-            <span className="text-blue-600">DON'T Wait</span>
+            <span className="text-blue-600">Don't Wait</span>
           </h1>
           <p className="text-lg sm:text-2xl md:text-3xl text-gray-700 font-semibold leading-relaxed">
             If you were recently hurt in a car accident, you could be eligible for a 
