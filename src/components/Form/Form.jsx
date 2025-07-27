@@ -26,6 +26,7 @@ const MultiStepForm = () => {
     phone: "",
     zipCode: "",
     email: "",
+    agreeToTerms: false, // ✅ Added this
   });
 
   const goToNext = () => setStep((prev) => Math.min(prev + 1, steps.length));
@@ -33,11 +34,13 @@ const MultiStepForm = () => {
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
 
-    if (type === "checkbox") {
+    if (type === "checkbox" && name === "medical") {
       const updatedMedical = checked
         ? [...formData.medical, value]
         : formData.medical.filter((item) => item !== value);
       setFormData({ ...formData, medical: updatedMedical });
+    } else if (type === "checkbox") {
+      setFormData({ ...formData, [name]: checked });
     } else {
       setFormData({ ...formData, [name]: value });
       goToNext();
@@ -57,6 +60,7 @@ const MultiStepForm = () => {
     if (!formData.phone.trim()) newErrors.phone = "Phone number is required.";
     if (!formData.zipCode || formData.zipCode.length !== 5) newErrors.zipCode = "Zip code must be 5 digits.";
     if (!formData.email.trim()) newErrors.email = "Email is required.";
+    if (!formData.agreeToTerms) newErrors.agreeToTerms = "You must agree before submitting."; // ✅ Check added
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -104,7 +108,6 @@ const MultiStepForm = () => {
               className="text-center text-green-600 font-bold text-lg sm:text-xl"
             >
               ✅ Thank you! Your form was submitted successfully.
-             
             </motion.div>
           ) : (
             <>
@@ -267,6 +270,21 @@ const MultiStepForm = () => {
                     required
                   />
                   {errors.email && <p className="text-red-600 text-sm mb-2">{errors.email}</p>}
+
+                  {/* ✅ Agreement Checkbox */}
+                  <div className="flex items-start gap-2 mt-2">
+                    <input
+                      type="checkbox"
+                      name="agreeToTerms"
+                      checked={formData.agreeToTerms}
+                      onChange={handleChange}
+                      className="mt-1"
+                    />
+                    <p className="text-xs text-gray-700">
+                      By clicking “Submit”, you agree that the phone number you are providing may be used to contact you by <strong>Car Accident Helpline</strong> (including with auto-dialed/auto-selected and prerecorded calls, as well as text/SMS messages) with information and offers concerning your injuries and potential legal help. Msg. and data rates apply, and your consent to such contact/marketing is not required for purchase or use of services.
+                    </p>
+                  </div>
+                  {errors.agreeToTerms && <p className="text-red-600 text-sm mt-1">{errors.agreeToTerms}</p>}
 
                   <button
                     type="submit"
