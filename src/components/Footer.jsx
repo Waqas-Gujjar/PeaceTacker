@@ -1,6 +1,13 @@
 import React from 'react';
+import { useNavigate } from "react-router-dom";
 
 export const Footer = () => {
+  const navigate = useNavigate();
+
+  const handleSubmit = () => {
+    navigate("/PrivacyPolicy");
+  };
+
   return (
     <footer className="bg-[#02193b] text-white py-8 px-4">
       <div className="max-w-6xl mx-auto text-center space-y-8">
@@ -10,9 +17,13 @@ export const Footer = () => {
         </p>
 
         {/* Links */}
-        <div className="flex flex-col sm:flex-row justify-center items-center gap-60   text-sm font-medium text-gray-200">
-          <a href="#" className="hover:underline">Terms and Conditions</a>
-          <a href="#" className="hover:underline">Privacy Policy</a>
+        <div className="flex flex-col sm:flex-row justify-center items-center gap-60 text-sm font-medium text-gray-200">
+          <button onClick={handleSubmit} className="hover:underline bg-transparent border-none cursor-pointer">
+             Privacy Policy
+          </button>
+          <button onClick={handleSubmit} className="hover:underline bg-transparent border-none cursor-pointer">
+         Terms and Conditions
+          </button>
         </div>
       </div>
     </footer>

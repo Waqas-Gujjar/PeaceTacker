@@ -4,6 +4,7 @@ import NavBar from "./components/NavBar.jsx";
 import Main from "./components/Main.jsx";
 import Footer from "./components/Footer.jsx";
 import Offer from "./components/Offer.jsx"; // default export
+import Policy from "./components/pages/Privacy.jsx"
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Main />} />
             <Route path="/Offers" element={<Offer />} />
+            <Route path="/PrivacyPolicy" element={<Policy />} />
           </Routes>
         </div>
         <Footer />
