@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
-const steps = [1, 2, 3, 4, 5, 6];
+const steps = [10, 40, 60, 80, 95, 100  ];
 
 const motionProps = {
   initial: { opacity: 0, x: 40 },

@@ -114,31 +114,36 @@ const para = [
 
 const Privacy = () => {
   return (
-    <>
-      <div className='mx-30 px-4 sm:px-16'>
-        <div className='my-10 font-bold text-4xl'>
-          <h1>Privacy Policy</h1>
-        </div>
-
-        {/* Render all sections */}
-        {para.map((item) => (
-          <div key={item.id} className='mb-8'>
-            <h2 className='text-xl underline  font-semibold mb-2'>{item.heading}</h2>
-            <p className='text-gray-800 leading-relaxed mb-4'>{item.paragraph}</p>
-
-            {/* Render optional para1 to para7 if they exist */}
-            {item.para1 && <p className='text-gray-700 leading-relaxed mb-4'>{item.para1}</p>}
-            {item.para2 && <p className='text-gray-700 leading-relaxed mb-4'>{item.para2}</p>}
-            {item.para3 && <p className='text-gray-700 leading-relaxed mb-4'>{item.para3}</p>}
-            {item.para4 && <p className='text-gray-700 leading-relaxed mb-4'>{item.para4}</p>}
-            {item.para5 && <p className='text-gray-700 leading-relaxed mb-4'>{item.para5}</p>}
-            {item.para6 && <p className='text-gray-700 leading-relaxed mb-4'>{item.para6}</p>}
-            {item.para7 && <p className='text-gray-700 leading-relaxed mb-4'>{item.para7}</p>}
-          </div>
-        ))}
+    <div className="px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 py-10">
+      <div className="text-center mb-12">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold">Privacy Policy</h1>
       </div>
-    </>
+
+      {/* Render all sections */}
+      {para.map((item) => (
+        <div key={item.id} className="mb-10">
+          <h2 className="text-lg sm:text-xl md:text-2xl font-semibold underline mb-3">{item.heading}</h2>
+          <p className="text-gray-800 leading-relaxed text-base sm:text-lg mb-4">{item.paragraph}</p>
+
+          {/* Render optional para1 to para7 if they exist */}
+          {[...Array(7)].map((_, index) => {
+            const key = `para${index + 1}`;
+            return (
+              item[key] && (
+                <p
+                  key={key}
+                  className="text-gray-700 leading-relaxed text-base sm:text-lg mb-4"
+                >
+                  {item[key]}
+                </p>
+              )
+            );
+          })}
+        </div>
+      ))}
+    </div>
   );
 };
+
 
 export default Privacy

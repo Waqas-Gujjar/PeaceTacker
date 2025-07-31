@@ -13,9 +13,11 @@ const App = () => {
         <NavBar />
         <div className="flex-grow">
           <Routes>
+           
             <Route path="/" element={<Main />} />
             <Route path="/Offers" element={<Offer />} />
-            <Route path="/PrivacyPolicy" element={<Policy />} />
+             <Route path="/PrivacyPolicy" element={<Policy />} />
+            
           </Routes>
         </div>
         <Footer />
