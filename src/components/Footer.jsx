@@ -13,7 +13,7 @@ export const Footer = () => {
       <div className="max-w-6xl mx-auto text-center space-y-8">
         {/* Disclaimer */}
         <p className="text-sm sm:text-base leading-relaxed text-gray-300">
-          This is an advertisement. Top Injury Claims is responsible for ad content. Top Injury Claims is not a law firm or referral service and does not provide legal advice. This is a free matching service. Information you submit will be shared with third-party attorney(s). We do not evaluate your legal situation when determining which attorney will receive your information. We do not recommend or endorse any attorneys that pay to participate. No representation is made about the quality of legal services or the qualifications of advertising attorneys. An attorney-client relationship is not formed when you submit information through the form. The hiring of a lawyer is a critical decision and should not be predicated solely on comments, advertisements or other content found on any website. You are under no obligation to retain a lawyer who contacts you through this service.
+          This is an advertisement. Picasetakers is responsible for ad content. Picasetakers is not a law firm or referral service and does not provide legal advice. This is a free matching service. Information you submit will be shared with third-party attorney(s). We do not evaluate your legal situation when determining which attorney will receive your information. We do not recommend or endorse any attorneys that pay to participate. No representation is made about the quality of legal services or the qualifications of advertising attorneys. An attorney-client relationship is not formed when you submit information through the form. The hiring of a lawyer is a critical decision and should not be predicated solely on comments, advertisements or other content found on any website. You are under no obligation to retain a lawyer who contacts you through this service.
         </p>
 
         {/* Links */}
@@ -22,7 +22,7 @@ export const Footer = () => {
              Privacy Policy
           </button>
           <button onClick={handleSubmit} className="hover:underline bg-transparent border-none cursor-pointer">
-         Terms and Conditions
+           Terms and Conditions
           </button>
         </div>
       </div>
