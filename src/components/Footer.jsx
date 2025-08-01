@@ -4,8 +4,12 @@ import { useNavigate } from "react-router-dom";
 export const Footer = () => {
   const navigate = useNavigate();
 
-  const handleSubmit = () => {
+  const goToPrivacyPolicy = () => {
     navigate("/PrivacyPolicy");
+  };
+
+  const goToTerms = () => {
+    navigate("/TermsandConditions");
   };
 
   return (
@@ -17,13 +21,23 @@ export const Footer = () => {
         </p>
 
         {/* Links */}
-        <div className="flex flex-col sm:flex-row justify-center items-center gap-60 text-sm font-medium text-gray-200">
-          <button onClick={handleSubmit} className="hover:underline bg-transparent border-none cursor-pointer">
-             Privacy Policy
-          </button>
-          <button onClick={handleSubmit} className="hover:underline bg-transparent border-none cursor-pointer">
-           Terms and Conditions
-          </button>
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-60 text-sm font-medium text-gray-200">
+          <a
+            href="/PrivacyPolicy"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:underline cursor-pointer"
+          >
+            Privacy Policy
+          </a>
+          <a
+            href="/TermsandConditions"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:underline cursor-pointer"
+          >
+            Terms and Conditions
+          </a>
         </div>
       </div>
     </footer>

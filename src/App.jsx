@@ -5,6 +5,7 @@ import Main from "./components/Main.jsx";
 import Footer from "./components/Footer.jsx";
 import Offer from "./components/Offer.jsx"; // default export
 import Policy from "./components/pages/Privacy.jsx"
+import Term from "./components/pages/Terms.jsx"
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
             <Route path="/" element={<Main />} />
             <Route path="/Offers" element={<Offer />} />
              <Route path="/PrivacyPolicy" element={<Policy />} />
+             <Route path="/TermsandConditions" element={<Term />} />
             
           </Routes>
         </div>
