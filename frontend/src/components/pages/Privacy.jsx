@@ -106,7 +106,7 @@ const para = [
     {
         id : '17',
         heading : 'CONTACT US  ',
-        paragraph : 'If you have any inquiries regarding our Privacy Policy or the website, you can contact us through our email at info@picasetakers.com, or by sending postal mail to Picasetakershelpline at 312 W. 2nd St #2212 Casper, WY 82601, or by calling us at (406)225-1354. We are always happy to assist you with any concerns or questions you may have.',
+        paragraph : 'If you have any inquiries regarding our Privacy Policy or the website, you can contact us through our email at info@picasetakers.com, or by sending postal mail to Picasetakershelpline at 1001 S MAIN ST STE 500 KALISPELL, MT 59901-5635 or by calling us at (406)225-1354. We are always happy to assist you with any concerns or questions you may have.',
 
     },
 ]

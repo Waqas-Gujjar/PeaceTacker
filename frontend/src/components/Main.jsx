@@ -1,5 +1,5 @@
 import React from "react";
-import Bar from "./Bar";
+import Bar from "./Bar.jsx";
 import Form from "./Form/Form.jsx";
 import { FaLock } from "react-icons/fa";
 import { FaCircleCheck } from "react-icons/fa6";

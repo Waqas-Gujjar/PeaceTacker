@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import axios from "axios"; // ✅ Axios
 
-const steps = [10, 40, 60, 80, 95, 100  ];
+const steps = [10, 40, 60, 80, 95, 100];
 
 const motionProps = {
   initial: { opacity: 0, x: 40 },
@@ -26,7 +27,7 @@ const MultiStepForm = () => {
     phone: "",
     zipCode: "",
     email: "",
-    agreeToTerms: false, // ✅ Added this
+    agreeToTerms: false,
   });
 
   const goToNext = () => setStep((prev) => Math.min(prev + 1, steps.length));
@@ -47,7 +48,7 @@ const MultiStepForm = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const newErrors = {};
@@ -60,7 +61,7 @@ const MultiStepForm = () => {
     if (!formData.phone.trim()) newErrors.phone = "Phone number is required.";
     if (!formData.zipCode || formData.zipCode.length !== 5) newErrors.zipCode = "Zip code must be 5 digits.";
     if (!formData.email.trim()) newErrors.email = "Email is required.";
-    if (!formData.agreeToTerms) newErrors.agreeToTerms = "You must agree before submitting."; // ✅ Check added
+    if (!formData.agreeToTerms) newErrors.agreeToTerms = "You must agree before submitting.";
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -68,12 +69,30 @@ const MultiStepForm = () => {
     }
 
     setErrors({});
-    console.log(formData);
     setSubmitted(true);
 
-    setTimeout(() => {
-      navigate("/offers");
-    }, 1500);
+    try {
+      await axios.post("http://127.0.0.1:8000/api/api/", {
+        injury_type: formData.injuryType,
+        accident_time: formData.accidentTime,
+        fault: formData.fault,
+        medical: formData.medical,
+        attorney: formData.attorney,
+        full_name: formData.fullName,
+        phone: formData.phone,
+        zip_code: formData.zipCode,
+        email: formData.email,
+        agree_to_terms: formData.agreeToTerms,
+      });
+
+      setTimeout(() => {
+        navigate("/offers");
+      }, 1500);
+    } catch (error) {
+      console.error("Submission error:", error);
+      alert("Something went wrong. Please try again.");
+      setSubmitted(false);
+    }
   };
 
   const progressPercent = ((step - 1) / (steps.length - 1)) * 100;
@@ -133,7 +152,7 @@ const MultiStepForm = () => {
 
               {step === 2 && (
                 <motion.div key="step2" {...motionProps}>
-                  <h2 className="text-lg sm:text-xl font-bold mb-4">2. How long ago was your accident?</h2>
+                  <h2 className="text-lg sm:text-xl font-bold mb-4">2. When was the accident?</h2>
                   {["Within 1-3 months", "Within 3-6 months", "Within 9-12 Months", "Within 24 Months"].map((option) => (
                     <label key={option} className="block mb-2 text-sm sm:text-base">
                       <input
@@ -153,7 +172,7 @@ const MultiStepForm = () => {
 
               {step === 3 && (
                 <motion.div key="step3" {...motionProps}>
-                  <h2 className="text-lg sm:text-xl font-bold mb-4">Was the accident your fault?</h2>
+                  <h2 className="text-lg sm:text-xl font-bold mb-4">Who was at fault?</h2>
                   {["No, I was not at fault", "Partially at fault", "Not sure"].map((option) => (
                     <label key={option} className="block mb-2 text-sm sm:text-base">
                       <input
@@ -173,7 +192,7 @@ const MultiStepForm = () => {
 
               {step === 4 && (
                 <motion.div key="step4" {...motionProps}>
-                  <h2 className="text-lg sm:text-xl font-bold mb-4">Did you receive medical attention?</h2>
+                  <h2 className="text-lg sm:text-xl font-bold mb-4">Medical Attention</h2>
                   {["Ambulance", "Emergency Room", "Hospital", "Doctor", "Chiropractor", "No Medical Attention Yet"].map((option) => (
                     <label key={option} className="block mb-2 text-sm sm:text-base">
                       <input
@@ -200,7 +219,7 @@ const MultiStepForm = () => {
 
               {step === 5 && (
                 <motion.div key="step5" {...motionProps}>
-                  <h2 className="text-lg sm:text-xl font-bold mb-4">Have you signed any paperwork with an attorney?</h2>
+                  <h2 className="text-lg sm:text-xl font-bold mb-4">Attorney Paperwork</h2>
                   {["No", "Yes"].map((option) => (
                     <label key={option} className="block mb-2 text-sm sm:text-base">
                       <input
@@ -220,76 +239,29 @@ const MultiStepForm = () => {
 
               {step === 6 && (
                 <motion.div key="step6" {...motionProps}>
-                  <h2 className="text-lg sm:text-xl font-bold mb-4">Contact Details</h2>
+                  <h2 className="text-lg sm:text-xl font-bold mb-4">Contact Information</h2>
 
-                  <input
-                    type="text"
-                    name="fullName"
-                    placeholder="Full Name"
-                    value={formData.fullName}
-                    onChange={handleChange}
-                    className="w-full p-2 mb-2 border border-gray-300 rounded text-sm sm:text-base"
-                    required
-                  />
+                  <input type="text" name="fullName" placeholder="Full Name" value={formData.fullName} onChange={handleChange} className="w-full p-2 mb-2 border border-gray-300 rounded text-sm sm:text-base" />
                   {errors.fullName && <p className="text-red-600 text-sm mb-2">{errors.fullName}</p>}
 
-                  <input
-                    type="tel"
-                    name="phone"
-                    placeholder="Phone Number"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    className="w-full p-2 mb-2 border border-gray-300 rounded text-sm sm:text-base"
-                    required
-                  />
+                  <input type="tel" name="phone" placeholder="Phone Number" value={formData.phone} onChange={handleChange} className="w-full p-2 mb-2 border border-gray-300 rounded text-sm sm:text-base" />
                   {errors.phone && <p className="text-red-600 text-sm mb-2">{errors.phone}</p>}
 
-                  <input
-                    type="text"
-                    name="zipCode"
-                    placeholder="Zip Code (5 digits)"
-                    value={formData.zipCode}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      if (/^\d{0,5}$/.test(value)) {
-                        setFormData({ ...formData, zipCode: value });
-                      }
-                    }}
-                    className="w-full p-2 mb-2 border border-gray-300 rounded text-sm sm:text-base"
-                    required
-                  />
+                  <input type="text" name="zipCode" placeholder="Zip Code (5 digits)" value={formData.zipCode} onChange={(e) => /^\d{0,5}$/.test(e.target.value) && setFormData({ ...formData, zipCode: e.target.value })} className="w-full p-2 mb-2 border border-gray-300 rounded text-sm sm:text-base" />
                   {errors.zipCode && <p className="text-red-600 text-sm mb-2">{errors.zipCode}</p>}
 
-                  <input
-                    type="email"
-                    name="email"
-                    placeholder="Email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    className="w-full p-2 mb-2 border border-gray-300 rounded text-sm sm:text-base"
-                    required
-                  />
+                  <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} className="w-full p-2 mb-2 border border-gray-300 rounded text-sm sm:text-base" />
                   {errors.email && <p className="text-red-600 text-sm mb-2">{errors.email}</p>}
 
-                  {/* ✅ Agreement Checkbox */}
                   <div className="flex items-start gap-2 mt-2">
-                    <input
-                      type="checkbox"
-                      name="agreeToTerms"
-                      checked={formData.agreeToTerms}
-                      onChange={handleChange}
-                      className="mt-1"
-                    />
+                    <input type="checkbox" name="agreeToTerms" checked={formData.agreeToTerms} onChange={handleChange} className="mt-1" />
                     <p className="text-xs text-gray-700">
                       By clicking “Submit”, you agree that the phone number you are providing may be used to contact you by <strong>Car Accident Helpline</strong> (including with auto-dialed/auto-selected and prerecorded calls, as well as text/SMS messages) with information and offers concerning your injuries and potential legal help. Msg. and data rates apply, and your consent to such contact/marketing is not required for purchase or use of services.
                     </p>
                   </div>
                   {errors.agreeToTerms && <p className="text-red-600 text-sm mt-1">{errors.agreeToTerms}</p>}
 
-                  <button
-                    type="submit"
-                    className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded text-sm sm:text-base"
-                  >
+                  <button type="submit" className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded text-sm sm:text-base">
                     Submit
                   </button>
                 </motion.div>
