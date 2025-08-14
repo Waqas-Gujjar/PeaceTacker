@@ -4,8 +4,7 @@ from .schemas import LeadCreateSchema, LeadOutSchema
 
 router = Router()
 
-# POST: Create a new lead
-@router.post("/", response={201: LeadOutSchema})
+
 
 @router.post("/", response={201: LeadOutSchema})
 def create_lead(request, data: LeadCreateSchema):
@@ -20,6 +19,8 @@ def create_lead(request, data: LeadCreateSchema):
         zip_code=data.zip_code,
         email=data.email,
         agree_to_terms=data.agree_to_terms,
+        state=data.state,  # ⬅️ Added state field
+        tf_cert_url=data.tf_cert_url,
     )
     return 201, lead
 

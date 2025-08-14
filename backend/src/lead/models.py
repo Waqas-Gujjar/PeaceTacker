@@ -35,17 +35,34 @@ class Lead(models.Model):
         ("No", "No"),
     ]
 
-    
-    injury_type = models.CharField(max_length=100)
-    accident_time = models.CharField(max_length=100)
-    fault = models.CharField(max_length=100)
-    medical = models.TextField()  # ⬅️ Store as comma-separated string
-    attorney = models.CharField(max_length=100)
+    US_STATES = [
+        ("AL", "Alabama"), ("AK", "Alaska"), ("AZ", "Arizona"), ("AR", "Arkansas"),
+        ("CA", "California"), ("CO", "Colorado"), ("CT", "Connecticut"), ("DE", "Delaware"),
+        ("FL", "Florida"), ("GA", "Georgia"), ("HI", "Hawaii"), ("ID", "Idaho"),
+        ("IL", "Illinois"), ("IN", "Indiana"), ("IA", "Iowa"), ("KS", "Kansas"),
+        ("KY", "Kentucky"), ("LA", "Louisiana"), ("ME", "Maine"), ("MD", "Maryland"),
+        ("MA", "Massachusetts"), ("MI", "Michigan"), ("MN", "Minnesota"), ("MS", "Mississippi"),
+        ("MO", "Missouri"), ("MT", "Montana"), ("NE", "Nebraska"), ("NV", "Nevada"),
+        ("NH", "New Hampshire"), ("NJ", "New Jersey"), ("NM", "New Mexico"), ("NY", "New York"),
+        ("NC", "North Carolina"), ("ND", "North Dakota"), ("OH", "Ohio"), ("OK", "Oklahoma"),
+        ("OR", "Oregon"), ("PA", "Pennsylvania"), ("RI", "Rhode Island"), ("SC", "South Carolina"),
+        ("SD", "South Dakota"), ("TN", "Tennessee"), ("TX", "Texas"), ("UT", "Utah"),
+        ("VT", "Vermont"), ("VA", "Virginia"), ("WA", "Washington"), ("WV", "West Virginia"),
+        ("WI", "Wisconsin"), ("WY", "Wyoming"),
+    ]
+
+    injury_type = models.CharField(max_length=100, choices=INJURY_CHOICES)
+    accident_time = models.CharField(max_length=100, choices=ACCIDENT_TIME_CHOICES)
+    fault = models.CharField(max_length=100, choices=FAULT_CHOICES)
+    medical = models.TextField()  # Store as comma-separated string
+    attorney = models.CharField(max_length=100, choices=ATTORNEY_CHOICES)
     full_name = models.CharField(max_length=255)
     phone = models.CharField(max_length=20)
     zip_code = models.CharField(max_length=10)
     email = models.EmailField()
+    state = models.CharField(max_length=2, choices=US_STATES)  # ⬅️ Added field
     agree_to_terms = models.BooleanField(default=False)
+    tf_cert_url = models.TextField(null=True, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
 

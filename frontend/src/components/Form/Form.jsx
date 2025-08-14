@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import axios from "axios"; // ✅ Axios
+import axios from "axios";
 
 const steps = [10, 40, 60, 80, 95, 100];
 
@@ -27,8 +27,25 @@ const MultiStepForm = () => {
     phone: "",
     zipCode: "",
     email: "",
+    state: "",
     agreeToTerms: false,
   });
+
+  // Load TrustedForm SDK for certificate
+  useEffect(() => {
+    if (!document.getElementById("trustedform-sdk")) {
+      const tf = document.createElement("script");
+      tf.type = "text/javascript";
+      tf.async = true;
+      tf.id = "trustedform-sdk";
+      tf.src =
+        (document.location.protocol === "https:" ? "https" : "http") +
+        "://api.trustedform.com/trustedform.js?field=xxTrustedFormCertUrl&use_tagged_consent=true&l=" +
+        new Date().getTime() +
+        Math.random();
+      document.head.appendChild(tf);
+    }
+  }, []);
 
   const goToNext = () => setStep((prev) => Math.min(prev + 1, steps.length));
 
@@ -44,7 +61,7 @@ const MultiStepForm = () => {
       setFormData({ ...formData, [name]: checked });
     } else {
       setFormData({ ...formData, [name]: value });
-      goToNext();
+      if (name !== "state") goToNext();
     }
   };
 
@@ -61,6 +78,7 @@ const MultiStepForm = () => {
     if (!formData.phone.trim()) newErrors.phone = "Phone number is required.";
     if (!formData.zipCode || formData.zipCode.length !== 5) newErrors.zipCode = "Zip code must be 5 digits.";
     if (!formData.email.trim()) newErrors.email = "Email is required.";
+    if (!formData.state) newErrors.state = "Please select your state.";
     if (!formData.agreeToTerms) newErrors.agreeToTerms = "You must agree before submitting.";
 
     if (Object.keys(newErrors).length > 0) {
@@ -71,26 +89,35 @@ const MultiStepForm = () => {
     setErrors({});
     setSubmitted(true);
 
+    const payload = {
+      injury_type: formData.injuryType,
+      accident_time: formData.accidentTime,
+      fault: formData.fault,
+      medical: formData.medical,
+      attorney: formData.attorney,
+      full_name: formData.fullName,
+      phone: formData.phone,
+      zip_code: formData.zipCode,
+      email: formData.email,
+      state: formData.state,
+      agree_to_terms: formData.agreeToTerms,
+      tf_cert_url: document.getElementById("xxTrustedFormCertUrl")?.value || null,
+    };
+
     try {
-      await axios.post("http://127.0.0.1:8000/api/api/", {
-        injury_type: formData.injuryType,
-        accident_time: formData.accidentTime,
-        fault: formData.fault,
-        medical: formData.medical,
-        attorney: formData.attorney,
-        full_name: formData.fullName,
-        phone: formData.phone,
-        zip_code: formData.zipCode,
-        email: formData.email,
-        agree_to_terms: formData.agreeToTerms,
-      });
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/lead/create/",
+        payload
+      );
+
+      console.log("Lead created:", response.data);
 
       setTimeout(() => {
         navigate("/offers");
       }, 1500);
     } catch (error) {
-      console.error("Submission error:", error);
-      alert("Something went wrong. Please try again.");
+      console.error("Submission error:", error.response || error.message || error);
+      alert(error.response?.data?.detail || "Something went wrong. Please try again.");
       setSubmitted(false);
     }
   };
@@ -109,13 +136,17 @@ const MultiStepForm = () => {
             transition={{ duration: 0.5, ease: "easeInOut" }}
           />
           <div className="absolute top-0 left-0 w-full h-3 sm:h-4 flex justify-between items-center px-2 sm:px-3 text-[10px] sm:text-xs font-semibold text-white pointer-events-none">
-            <span>Step {step} of {steps.length}</span>
+            <span>
+              Step {step} of {steps.length}
+            </span>
             <span>{Math.round(progressPercent)}%</span>
           </div>
         </div>
       )}
 
       <form onSubmit={handleSubmit}>
+        <input type="hidden" id="xxTrustedFormCertUrl" name="xxTrustedFormCertUrl" />
+
         <AnimatePresence mode="wait">
           {submitted ? (
             <motion.div
@@ -133,7 +164,7 @@ const MultiStepForm = () => {
               {step === 1 && (
                 <motion.div key="step1" {...motionProps}>
                   <h2 className="text-lg sm:text-xl font-bold mb-4">1. How were you hurt?</h2>
-                  {["Automobile Accident", "Medical Negligence", "Slip & Fall", "Other Injury or Accident"].map((option) => (
+                  {["Automobile Accident","Medical Negligence","Slip & Fall","Other Injury or Accident"].map(option => (
                     <label key={option} className="block mb-2 text-sm sm:text-base">
                       <input
                         type="radio"
@@ -149,11 +180,10 @@ const MultiStepForm = () => {
                   {errors.injuryType && <p className="text-red-600 text-sm mt-2">{errors.injuryType}</p>}
                 </motion.div>
               )}
-
               {step === 2 && (
                 <motion.div key="step2" {...motionProps}>
                   <h2 className="text-lg sm:text-xl font-bold mb-4">2. When was the accident?</h2>
-                  {["Within 1-3 months", "Within 3-6 months", "Within 9-12 Months", "Within 24 Months"].map((option) => (
+                  {["Within 1-3 months","Within 3-6 months","Within 9-12 Months","Within 24 Months"].map(option => (
                     <label key={option} className="block mb-2 text-sm sm:text-base">
                       <input
                         type="radio"
@@ -169,11 +199,10 @@ const MultiStepForm = () => {
                   {errors.accidentTime && <p className="text-red-600 text-sm mt-2">{errors.accidentTime}</p>}
                 </motion.div>
               )}
-
               {step === 3 && (
                 <motion.div key="step3" {...motionProps}>
                   <h2 className="text-lg sm:text-xl font-bold mb-4">Who was at fault?</h2>
-                  {["No, I was not at fault", "Partially at fault", "Not sure"].map((option) => (
+                  {["No, I was not at fault","Partially at fault","Not sure"].map(option => (
                     <label key={option} className="block mb-2 text-sm sm:text-base">
                       <input
                         type="radio"
@@ -189,11 +218,10 @@ const MultiStepForm = () => {
                   {errors.fault && <p className="text-red-600 text-sm mt-2">{errors.fault}</p>}
                 </motion.div>
               )}
-
               {step === 4 && (
                 <motion.div key="step4" {...motionProps}>
                   <h2 className="text-lg sm:text-xl font-bold mb-4">Medical Attention</h2>
-                  {["Ambulance", "Emergency Room", "Hospital", "Doctor", "Chiropractor", "No Medical Attention Yet"].map((option) => (
+                  {["Ambulance","Emergency Room","Hospital","Doctor","Chiropractor","No Medical Attention Yet"].map(option => (
                     <label key={option} className="block mb-2 text-sm sm:text-base">
                       <input
                         type="checkbox"
@@ -216,11 +244,10 @@ const MultiStepForm = () => {
                   </button>
                 </motion.div>
               )}
-
               {step === 5 && (
                 <motion.div key="step5" {...motionProps}>
                   <h2 className="text-lg sm:text-xl font-bold mb-4">Attorney Paperwork</h2>
-                  {["No", "Yes"].map((option) => (
+                  {["No","Yes"].map(option => (
                     <label key={option} className="block mb-2 text-sm sm:text-base">
                       <input
                         type="radio"
@@ -236,32 +263,139 @@ const MultiStepForm = () => {
                   {errors.attorney && <p className="text-red-600 text-sm mt-2">{errors.attorney}</p>}
                 </motion.div>
               )}
-
               {step === 6 && (
                 <motion.div key="step6" {...motionProps}>
                   <h2 className="text-lg sm:text-xl font-bold mb-4">Contact Information</h2>
 
-                  <input type="text" name="fullName" placeholder="Full Name" value={formData.fullName} onChange={handleChange} className="w-full p-2 mb-2 border border-gray-300 rounded text-sm sm:text-base" />
+                  <select
+  name="state"
+  value={formData.state || ""}
+  onChange={handleChange}
+  className="w-full p-2 mb-2 border border-gray-300 rounded text-sm sm:text-base"
+>
+  <option value="">Select Your State</option>
+  <option value="AL">Alabama</option>
+  <option value="AK">Alaska</option>
+  <option value="AZ">Arizona</option>
+  <option value="AR">Arkansas</option>
+  <option value="CA">California</option>
+  <option value="CO">Colorado</option>
+  <option value="CT">Connecticut</option>
+  <option value="DE">Delaware</option>
+  <option value="FL">Florida</option>
+  <option value="GA">Georgia</option>
+  <option value="HI">Hawaii</option>
+  <option value="ID">Idaho</option>
+  <option value="IL">Illinois</option>
+  <option value="IN">Indiana</option>
+  <option value="IA">Iowa</option>
+  <option value="KS">Kansas</option>
+  <option value="KY">Kentucky</option>
+  <option value="LA">Louisiana</option>
+  <option value="ME">Maine</option>
+  <option value="MD">Maryland</option>
+  <option value="MA">Massachusetts</option>
+  <option value="MI">Michigan</option>
+  <option value="MN">Minnesota</option>
+  <option value="MS">Mississippi</option>
+  <option value="MO">Missouri</option>
+  <option value="MT">Montana</option>
+  <option value="NE">Nebraska</option>
+  <option value="NV">Nevada</option>
+  <option value="NH">New Hampshire</option>
+  <option value="NJ">New Jersey</option>
+  <option value="NM">New Mexico</option>
+  <option value="NY">New York</option>
+  <option value="NC">North Carolina</option>
+  <option value="ND">North Dakota</option>
+  <option value="OH">Ohio</option>
+  <option value="OK">Oklahoma</option>
+  <option value="OR">Oregon</option>
+  <option value="PA">Pennsylvania</option>
+  <option value="RI">Rhode Island</option>
+  <option value="SC">South Carolina</option>
+  <option value="SD">South Dakota</option>
+  <option value="TN">Tennessee</option>
+  <option value="TX">Texas</option>
+  <option value="UT">Utah</option>
+  <option value="VT">Vermont</option>
+  <option value="VA">Virginia</option>
+  <option value="WA">Washington</option>
+  <option value="WV">West Virginia</option>
+  <option value="WI">Wisconsin</option>
+  <option value="WY">Wyoming</option>
+</select>
+                  {errors.state && <p className="text-red-600 text-sm mb-2">{errors.state}</p>}
+
+                  <input
+                    type="text"
+                    name="fullName"
+                    placeholder="Full Name"
+                    value={formData.fullName}
+                    onChange={handleChange}
+                    className="w-full p-2 mb-2 border border-gray-300 rounded text-sm sm:text-base"
+                  />
                   {errors.fullName && <p className="text-red-600 text-sm mb-2">{errors.fullName}</p>}
 
-                  <input type="tel" name="phone" placeholder="Phone Number" value={formData.phone} onChange={handleChange} className="w-full p-2 mb-2 border border-gray-300 rounded text-sm sm:text-base" />
+                  <input
+                    type="tel"
+                    name="phone"
+                    placeholder="Phone Number"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    className="w-full p-2 mb-2 border border-gray-300 rounded text-sm sm:text-base"
+                  />
                   {errors.phone && <p className="text-red-600 text-sm mb-2">{errors.phone}</p>}
 
-                  <input type="text" name="zipCode" placeholder="Zip Code (5 digits)" value={formData.zipCode} onChange={(e) => /^\d{0,5}$/.test(e.target.value) && setFormData({ ...formData, zipCode: e.target.value })} className="w-full p-2 mb-2 border border-gray-300 rounded text-sm sm:text-base" />
+                  <input
+                    type="text"
+                    name="zipCode"
+                    placeholder="Zip Code (5 digits)"
+                    value={formData.zipCode}
+                    onChange={(e) =>
+                      /^\d{0,5}$/.test(e.target.value) &&
+                      setFormData({ ...formData, zipCode: e.target.value })
+                    }
+                    className="w-full p-2 mb-2 border border-gray-300 rounded text-sm sm:text-base"
+                  />
                   {errors.zipCode && <p className="text-red-600 text-sm mb-2">{errors.zipCode}</p>}
 
-                  <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} className="w-full p-2 mb-2 border border-gray-300 rounded text-sm sm:text-base" />
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="Email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className="w-full p-2 mb-2 border border-gray-300 rounded text-sm sm:text-base"
+                  />
                   {errors.email && <p className="text-red-600 text-sm mb-2">{errors.email}</p>}
 
                   <div className="flex items-start gap-2 mt-2">
-                    <input type="checkbox" name="agreeToTerms" checked={formData.agreeToTerms} onChange={handleChange} className="mt-1" />
+                    <input
+                      type="checkbox"
+                      name="agreeToTerms"
+                      checked={formData.agreeToTerms}
+                      onChange={handleChange}
+                      className="mt-1"
+                    />
                     <p className="text-xs text-gray-700">
-                      By clicking “Submit”, you agree that the phone number you are providing may be used to contact you by <strong>Car Accident Helpline</strong> (including with auto-dialed/auto-selected and prerecorded calls, as well as text/SMS messages) with information and offers concerning your injuries and potential legal help. Msg. and data rates apply, and your consent to such contact/marketing is not required for purchase or use of services.
+                      By clicking “Submit”, you agree that the phone number you are providing may be
+                      used to contact you by{" "}
+                      <strong>Car Accident Helpline</strong> (including with auto-dialed/auto-selected
+                      and prerecorded calls, as well as text/SMS messages) with information and
+                      offers concerning your injuries and potential legal help. Msg. and data rates
+                      apply, and your consent to such contact/marketing is not required for
+                      purchase or use of services.
                     </p>
                   </div>
-                  {errors.agreeToTerms && <p className="text-red-600 text-sm mt-1">{errors.agreeToTerms}</p>}
+                  {errors.agreeToTerms && (
+                    <p className="text-red-600 text-sm mt-1">{errors.agreeToTerms}</p>
+                  )}
 
-                  <button type="submit" className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded text-sm sm:text-base">
+                  <button
+                    type="submit"
+                    className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded text-sm sm:text-base"
+                  >
                     Submit
                   </button>
                 </motion.div>
@@ -275,3 +409,17 @@ const MultiStepForm = () => {
 };
 
 export default MultiStepForm;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
