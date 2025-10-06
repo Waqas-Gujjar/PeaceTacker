@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+
 
 const steps = [10, 40, 60, 80, 95, 100];
 
@@ -27,7 +27,6 @@ const MultiStepForm = () => {
     phone: "",
     zipCode: "",
     email: "",
-    state: "",
     agreeToTerms: false,
   });
 
@@ -61,7 +60,7 @@ const MultiStepForm = () => {
       setFormData({ ...formData, [name]: checked });
     } else {
       setFormData({ ...formData, [name]: value });
-      if (name !== "state") goToNext();
+      goToNext();
     }
   };
 
@@ -78,7 +77,6 @@ const MultiStepForm = () => {
     if (!formData.phone.trim()) newErrors.phone = "Phone number is required.";
     if (!formData.zipCode || formData.zipCode.length !== 5) newErrors.zipCode = "Zip code must be 5 digits.";
     if (!formData.email.trim()) newErrors.email = "Email is required.";
-    if (!formData.state) newErrors.state = "Please select your state.";
     if (!formData.agreeToTerms) newErrors.agreeToTerms = "You must agree before submitting.";
 
     if (Object.keys(newErrors).length > 0) {
@@ -99,25 +97,28 @@ const MultiStepForm = () => {
       phone: formData.phone,
       zip_code: formData.zipCode,
       email: formData.email,
-      state: formData.state,
       agree_to_terms: formData.agreeToTerms,
       tf_cert_url: document.getElementById("xxTrustedFormCertUrl")?.value || null,
     };
 
     try {
-      const response = await axios.post(
-        "http://127.0.0.1:8000/api/lead/create/",
-        payload
-      );
+      const response = await fetch("https://script.google.com/macros/s/AKfycbyeXIr3c-kb3l26QSpM6RMmM9OMgMSBfd9HuwBU69AkMuTfR5LddY_oVAB_uiX72opTyQ/exec", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
 
-      console.log("Lead created:", response.data);
+      const result = await response.json();
+      console.log("Data submitted to Google Sheets:", result);
 
       setTimeout(() => {
         navigate("/offers");
       }, 1500);
     } catch (error) {
-      console.error("Submission error:", error.response || error.message || error);
-      alert(error.response?.data?.detail || "Something went wrong. Please try again.");
+      console.error("Submission error:", error);
+      alert("Something went wrong. Please try again.");
       setSubmitted(false);
     }
   };
@@ -266,66 +267,6 @@ const MultiStepForm = () => {
               {step === 6 && (
                 <motion.div key="step6" {...motionProps}>
                   <h2 className="text-lg sm:text-xl font-bold mb-4">Contact Information</h2>
-
-                  <select
-  name="state"
-  value={formData.state || ""}
-  onChange={handleChange}
-  className="w-full p-2 mb-2 border border-gray-300 rounded text-sm sm:text-base"
->
-  <option value="">Select Your State</option>
-  <option value="AL">Alabama</option>
-  <option value="AK">Alaska</option>
-  <option value="AZ">Arizona</option>
-  <option value="AR">Arkansas</option>
-  <option value="CA">California</option>
-  <option value="CO">Colorado</option>
-  <option value="CT">Connecticut</option>
-  <option value="DE">Delaware</option>
-  <option value="FL">Florida</option>
-  <option value="GA">Georgia</option>
-  <option value="HI">Hawaii</option>
-  <option value="ID">Idaho</option>
-  <option value="IL">Illinois</option>
-  <option value="IN">Indiana</option>
-  <option value="IA">Iowa</option>
-  <option value="KS">Kansas</option>
-  <option value="KY">Kentucky</option>
-  <option value="LA">Louisiana</option>
-  <option value="ME">Maine</option>
-  <option value="MD">Maryland</option>
-  <option value="MA">Massachusetts</option>
-  <option value="MI">Michigan</option>
-  <option value="MN">Minnesota</option>
-  <option value="MS">Mississippi</option>
-  <option value="MO">Missouri</option>
-  <option value="MT">Montana</option>
-  <option value="NE">Nebraska</option>
-  <option value="NV">Nevada</option>
-  <option value="NH">New Hampshire</option>
-  <option value="NJ">New Jersey</option>
-  <option value="NM">New Mexico</option>
-  <option value="NY">New York</option>
-  <option value="NC">North Carolina</option>
-  <option value="ND">North Dakota</option>
-  <option value="OH">Ohio</option>
-  <option value="OK">Oklahoma</option>
-  <option value="OR">Oregon</option>
-  <option value="PA">Pennsylvania</option>
-  <option value="RI">Rhode Island</option>
-  <option value="SC">South Carolina</option>
-  <option value="SD">South Dakota</option>
-  <option value="TN">Tennessee</option>
-  <option value="TX">Texas</option>
-  <option value="UT">Utah</option>
-  <option value="VT">Vermont</option>
-  <option value="VA">Virginia</option>
-  <option value="WA">Washington</option>
-  <option value="WV">West Virginia</option>
-  <option value="WI">Wisconsin</option>
-  <option value="WY">Wyoming</option>
-</select>
-                  {errors.state && <p className="text-red-600 text-sm mb-2">{errors.state}</p>}
 
                   <input
                     type="text"
