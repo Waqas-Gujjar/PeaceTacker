@@ -102,17 +102,15 @@ const MultiStepForm = () => {
     };
 
     try {
-      const response =  await fetch("https://script.google.com/macros/s/AKfycbynH3mET6nj678x9wLMLVkIXF8S25EH_mvj94DccgvQXawM3VwbA0i0YZZ6TYNvfpGf/exec", {
+      await fetch("https://script.google.com/macros/s/AKfycbynH3mET6nj678x9wLMLVkIXF8S25EH_mvj94DccgvQXawM3VwbA0i0YZZ6TYNvfpGf/exec", {
         method: "POST",
         mode: "no-cors",
         headers: { "Content-Type": "application/json"},
         body: JSON.stringify(payload),
       });
 
-
-      const result = await response.json();
-      console.log("Data submitted to Google Sheets:", result);
-
+      // With no-cors mode the response is opaque, so we can't safely call response.json().
+      // Assume success if no network error is thrown and move to the offers page.
       setTimeout(() => {
         navigate("/offers");
       }, 1500);
