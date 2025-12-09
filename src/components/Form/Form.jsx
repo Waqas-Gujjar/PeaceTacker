@@ -102,9 +102,14 @@ const MultiStepForm = () => {
     };
 
     try {
-      const response =  await fetch("https://script.google.com/macros/s/AKfycbzGuZeZ3ypsS888rY1rrPQa5wGAnj9-tpzgxddqinDou8xpgwxZMgZK5axYRM8GH5st/exec", {
+      const response = await fetch("https://script.google.com/macros/s/AKfycbzGuZeZ3ypsS888rY1rrPQa5wGAnj9-tpzgxddqinDou8xpgwxZMgZK5axYRM8GH5st/exec", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+          "Access-Control-Allow-Headers": "Content-Type"
+        },
         body: JSON.stringify(payload),
       });
 
