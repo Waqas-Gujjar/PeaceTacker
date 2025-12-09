@@ -102,14 +102,14 @@ const MultiStepForm = () => {
     };
 
     try {
-      const response =  fetch("https://script.google.com/macros/s/AKfycbzGuZeZ3ypsS888rY1rrPQa5wGAnj9-tpzgxddqinDou8xpgwxZMgZK5axYRM8GH5st/exec", {
+      const response =  await fetch("https://script.google.com/macros/s/AKfycbzGuZeZ3ypsS888rY1rrPQa5wGAnj9-tpzgxddqinDou8xpgwxZMgZK5axYRM8GH5st/exec", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
 
 
-      const result = response.json();
+      const result = await response.json();
       console.log("Data submitted to Google Sheets:", result);
 
       setTimeout(() => {
