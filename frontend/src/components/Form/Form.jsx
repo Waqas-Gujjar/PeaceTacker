@@ -102,15 +102,14 @@ const MultiStepForm = () => {
     };
 
     try {
-      const response = await fetch("https://script.google.com/macros/s/AKfycbyeXIr3c-kb3l26QSpM6RMmM9OMgMSBfd9HuwBU69AkMuTfR5LddY_oVAB_uiX72opTyQ/exec", {
+      const response =  fetch("https://script.google.com/macros/s/AKfycbzGuZeZ3ypsS888rY1rrPQa5wGAnj9-tpzgxddqinDou8xpgwxZMgZK5axYRM8GH5st/exec", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
 
-      const result = await response.json();
+
+      const result = response.json();
       console.log("Data submitted to Google Sheets:", result);
 
       setTimeout(() => {
@@ -165,7 +164,7 @@ const MultiStepForm = () => {
               {step === 1 && (
                 <motion.div key="step1" {...motionProps}>
                   <h2 className="text-lg sm:text-xl font-bold mb-4">1. How were you hurt?</h2>
-                  {["Automobile Accident","Medical Negligence","Slip & Fall","Other Injury or Accident"].map(option => (
+                  {["Automobile Accident", "Medical Negligence", "Slip & Fall", "Other Injury or Accident"].map(option => (
                     <label key={option} className="block mb-2 text-sm sm:text-base">
                       <input
                         type="radio"
@@ -184,7 +183,7 @@ const MultiStepForm = () => {
               {step === 2 && (
                 <motion.div key="step2" {...motionProps}>
                   <h2 className="text-lg sm:text-xl font-bold mb-4">2. When was the accident?</h2>
-                  {["Within 1-3 months","Within 3-6 months","Within 9-12 Months","Within 24 Months"].map(option => (
+                  {["Within 1-3 months", "Within 3-6 months", "Within 9-12 Months", "Within 24 Months"].map(option => (
                     <label key={option} className="block mb-2 text-sm sm:text-base">
                       <input
                         type="radio"
@@ -203,7 +202,7 @@ const MultiStepForm = () => {
               {step === 3 && (
                 <motion.div key="step3" {...motionProps}>
                   <h2 className="text-lg sm:text-xl font-bold mb-4">Who was at fault?</h2>
-                  {["No, I was not at fault","Partially at fault","Not sure"].map(option => (
+                  {["No, I was not at fault", "Partially at fault", "Not sure"].map(option => (
                     <label key={option} className="block mb-2 text-sm sm:text-base">
                       <input
                         type="radio"
@@ -222,7 +221,7 @@ const MultiStepForm = () => {
               {step === 4 && (
                 <motion.div key="step4" {...motionProps}>
                   <h2 className="text-lg sm:text-xl font-bold mb-4">Medical Attention</h2>
-                  {["Ambulance","Emergency Room","Hospital","Doctor","Chiropractor","No Medical Attention Yet"].map(option => (
+                  {["Ambulance", "Emergency Room", "Hospital", "Doctor", "Chiropractor", "No Medical Attention Yet"].map(option => (
                     <label key={option} className="block mb-2 text-sm sm:text-base">
                       <input
                         type="checkbox"
@@ -248,7 +247,7 @@ const MultiStepForm = () => {
               {step === 5 && (
                 <motion.div key="step5" {...motionProps}>
                   <h2 className="text-lg sm:text-xl font-bold mb-4">Attorney Paperwork</h2>
-                  {["No","Yes"].map(option => (
+                  {["No", "Yes"].map(option => (
                     <label key={option} className="block mb-2 text-sm sm:text-base">
                       <input
                         type="radio"
