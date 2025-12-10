@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 
 
 const steps = [10, 40, 60, 80, 95, 100];
-
 const motionProps = {
   initial: { opacity: 0, x: 40 },
   animate: { opacity: 1, x: 0 },
@@ -17,6 +16,8 @@ const MultiStepForm = () => {
   const [step, setStep] = useState(1);
   const [submitted, setSubmitted] = useState(false);
   const [errors, setErrors] = useState({});
+  const [userIP, setUserIP] = useState(""); // ← Naya state sirf IP ke liye
+
   const [formData, setFormData] = useState({
     injuryType: "",
     accidentTime: "",
@@ -30,8 +31,9 @@ const MultiStepForm = () => {
     agreeToTerms: false,
   });
 
-  // Load TrustedForm SDK for certificate
+  // ←←← YEHAAN IP ADDRESS CAPTURE HO RAHA HAI ←←←
   useEffect(() => {
+    // TrustedForm load karo
     if (!document.getElementById("trustedform-sdk")) {
       const tf = document.createElement("script");
       tf.type = "text/javascript";
@@ -44,6 +46,18 @@ const MultiStepForm = () => {
         Math.random();
       document.head.appendChild(tf);
     }
+
+    // IP address fetch karo (ipify.org – sabse reliable aur adblocker mein bhi kaam karta hai mostly)
+    fetch("https://api.ipify.org?format=json")
+      .then((res) => res.json())
+      .then((data) => setUserIP(data.ip))
+      .catch(() => {
+        // Fallback agar ipify block ho to
+        fetch("https://ipapi.co/json/")
+          .then((res) => res.json())
+          .then((data) => setUserIP(data.ip || "Unknown"))
+          .catch(() => setUserIP("Blocked/Unknown"));
+      });
   }, []);
 
   const goToNext = () => setStep((prev) => Math.min(prev + 1, steps.length));
@@ -67,6 +81,7 @@ const MultiStepForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Validation (same as before)
     const newErrors = {};
     if (!formData.injuryType) newErrors.injuryType = "Please select how you were hurt.";
     if (!formData.accidentTime) newErrors.accidentTime = "Please select accident timing.";
@@ -99,18 +114,17 @@ const MultiStepForm = () => {
       email: formData.email,
       agree_to_terms: formData.agreeToTerms,
       tf_cert_url: document.getElementById("xxTrustedFormCertUrl")?.value || null,
+      user_ip: userIP || "Not captured",
     };
 
     try {
       await fetch("https://script.google.com/macros/s/AKfycbynH3mET6nj678x9wLMLVkIXF8S25EH_mvj94DccgvQXawM3VwbA0i0YZZ6TYNvfpGf/exec", {
         method: "POST",
         mode: "no-cors",
-        headers: { "Content-Type": "application/json"},
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
 
-      // With no-cors mode the response is opaque, so we can't safely call response.json().
-      // Assume success if no network error is thrown and move to the offers page.
       setTimeout(() => {
         navigate("/offers");
       }, 1500);
